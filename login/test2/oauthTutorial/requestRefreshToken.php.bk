@@ -1,0 +1,42 @@
+<?php
+// Get the authorization code from the AJAX request
+$authorizationCode = $_POST['code'];
+
+// Perform the token exchange to obtain the refresh token from the authorization server
+// Make a request to the authorization server's token endpoint and handle the response
+
+// Example token exchange request
+$tokenEndpoint = 'https://accounts.google.com/o/oauth2/token';
+$clientId = '802530843235-7tu3o3ad0v1pkorb7ddhmq19sf7uphe4.apps.googleusercontent.com';
+$clientSecret = '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';
+$redirectUri = 'https://elmejordominiodepruebasdelahistoriadelahumanidad.shop';
+
+// Prepare the request parameters
+$params = [
+    'grant_type' => 'authorization_code',
+    'code' => $authorizationCode,
+    'client_id' => $clientId,
+    'client_secret' => $clientSecret,
+    'redirect_uri' => $redirectUri
+];
+
+// Make a POST request to the token endpoint to exchange the authorization code for tokens
+$response = makeTokenExchangeRequest($tokenEndpoint, $params);
+
+
+
+// Send the response back to the frontend (you can include access token, refresh token, etc. in the response)
+$response = [
+    'status' => 'success',
+    'message' => 'Refresh token obtained successfully.',
+
+    // Include other data in the response if needed
+    'access token' => $accessToken
+    'refresh token' => $refreshToken
+
+
+];
+
+echo json_encode($response);
+?>
+
