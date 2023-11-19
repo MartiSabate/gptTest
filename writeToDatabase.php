@@ -1,13 +1,22 @@
 <?php
 /*
-//declare parameters
-$localId = $_GET['local'];
-$accessToken = $_GET['accessToken'];
+Test this function in > > > https://elmejordominiodepruebasdelahistoriadelahumanidad.shop/focusWebTest/writeToDatabase.php?local=12555345&accessToken=token
+Where:
+  - local > localId
+  - accessToken > Access Token
 
 */
 
+/*
+//declare parameters
+$localId = $_GET['local'];
+$accessToken = $_GET['accessToken'];
+*/
+
+//Testing variables value
 $localId = 9898011;
 $accessToken = "token";
+
 
 //declare variables
 $host = 'localhost';
@@ -56,25 +65,40 @@ if ($stmt->execute()) {
 $stmt->close();
 */
 
-if ($rowCount > 0) {
+if ($rowCount > 0) { //verify the row cound is more than 0
   // If a row with the localId exists, update it
-  $updateSql = "UPDATE access_tokens SET token = ? WHERE localId = ?";
+  $updateSql = "UPDATE access_tokens SET token = ? WHERE localId = ?;";
   $updateStmt = $conn->prepare($updateSql);
   $updateStmt->bind_param("si", $accessToken, $localId);
 
+  $resetTableSql = "DELETE FROM access_tokens WHERE localId = ?;";
+  $resetTableSqlStmt = $conn->prepare($resetTableSql);
+  $resetTableSqlStmt->bind_param("i", $localId);
+
+  if ($resetTableSqlStmt->execute()) {
+    echo "Record updated successfully";
+  } else {
+    echo "Error updating record: " . $updateStmt->error;
+}
+
+
+  //print on serial monitor the query status
+
+  /*
   if ($updateStmt->execute()) {
       echo "Record updated successfully";
   } else {
       echo "Error updating record: " . $updateStmt->error;
   }
 
+  */
   $updateStmt->close();
-} else {
-  // If no row with the localId exists, insert a new row
+} else {  // If no row with the localId exists, insert a new row
   $insertSql = "INSERT INTO access_tokens (localId, token) VALUES (?, ?)";
   $insertStmt = $conn->prepare($insertSql);
   $insertStmt->bind_param("is", $localId, $accessToken);
 
+  //print on serial monitor the query status
   if ($insertStmt->execute()) {
       echo "Record inserted successfully";
   } else {

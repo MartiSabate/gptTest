@@ -6,7 +6,7 @@ function signIn(){
 
 
 	// Store the value of the 'localId' parameter from the URL
-	const localId = urlParams.get('localId');
+	const localId = urlParams.get('local');
 
 	
 
